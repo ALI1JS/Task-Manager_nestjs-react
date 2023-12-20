@@ -14,7 +14,7 @@ export class TaskEntity {
   desc: string;
 
   @Column()
-  date: string;
+  date: Date;
 
   @Column({ default: 'pending' })
   status: string;
