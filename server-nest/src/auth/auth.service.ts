@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { UserEntity } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -49,7 +49,7 @@ export class AuthService {
         where: { email: loginData.email },
       });
 
-      if (!user) throw new NotFoundException('User not found');
+      if (!user) return { statusCode: 404, message: 'User not found' };
 
       const passMatch = await this.passServices.comparePassword(
         loginData.password,
@@ -71,7 +71,7 @@ export class AuthService {
   async updateProfile(id: number, newData: Partial<SignupDto>) {
     const existUser = await this.authRepository.findOne({ where: { id: id } });
 
-    if (!existUser) throw new NotFoundException('this User  not found');
+    if (!existUser) return { statusCode: 404, message: 'User not found' };
 
     this.authRepository.merge(existUser, newData);
 

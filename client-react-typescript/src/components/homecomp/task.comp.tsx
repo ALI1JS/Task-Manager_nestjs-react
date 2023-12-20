@@ -12,6 +12,7 @@ interface TaskProps {
 }
 
 const Task: React.FC<TaskProps> = ({ id,title, desc, date, status, onUpdate, onDelete, onComplete }) => {
+  
   const [isEditMode, setIsEditMode] = useState(false);
   const [updatedTitle, setUpdatedTitle] = useState(title);
   const [updatedDescription, setUpdatedDescription] = useState(desc);

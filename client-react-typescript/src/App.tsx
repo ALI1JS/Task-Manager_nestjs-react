@@ -4,9 +4,11 @@ import HomePage from "./components/homecomp/home.comp";
 import LoginForm from "./components/logincomp/login.comp";
 import NotFoundPage from "./components/notFoundcom";
 import SignupForm from "./components/sinupcomp/signup.comp";
+import { retriveToken } from "./utlitis/token_storage";
 
 
 function App() {
+
   return (
     <BrowserRouter>
 		<Toaster position="top-center"/>
@@ -14,7 +16,10 @@ function App() {
 			<Route path="*" element= {<NotFoundPage/>} />
 			<Route path="/" element={<LoginForm/>} />
 			<Route path="/signup" element={<SignupForm/>} />
-			  <Route path="/tasks" element={<HomePage/>} />
+			{
+               retriveToken() &&
+			   <Route path="/tasks" element={<HomePage/>}/>
+			}
 		</Routes>
 	</BrowserRouter>
   );

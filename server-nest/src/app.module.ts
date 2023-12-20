@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { config } from './orm.confic';
+import { config } from './ormconfic';
 import { AuthModule } from './auth/auth.module';
 import { UsersMdules } from './users/users.module';
 

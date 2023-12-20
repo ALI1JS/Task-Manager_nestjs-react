@@ -5,7 +5,7 @@ import { UserEntity } from './user.entity';
 import { AuthService } from './auth.service';
 import { PasswordService } from './auth-password.service';
 import { JwtModule } from '@nestjs/jwt';
-import { JWT_SECRET_KEY } from 'src/tokenconstanat';
+import { JWT_SECRET_KEY } from 'src/tokenconstant';
 import { ScrapingService } from './scraping.service';
 
 @Module({

@@ -39,7 +39,8 @@ Task Manager is a full-stack web application built with Nest.js, TypeScript, Rea
 ## Database Configuration
 
 1. Create a database named `tasks`.
-2. Set up your database connection in the backend's `ormconfig.json` file.
+2. Set up your database connection in the backend's `ormconfig.ts` file in the
+/src/ormconfig.ts
 
 example:
 

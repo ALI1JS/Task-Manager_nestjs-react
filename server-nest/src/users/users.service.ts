@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TaskEntity } from './tasks.entity';
@@ -28,7 +28,7 @@ export class UsersService {
       where: { id: id, ownerID: verified.userID },
     });
 
-    if (!task) throw new NotFoundException('this task not found');
+    if (!task) return { statusCode: 404, message: 'Task not found' };
 
     this.taskRepository.merge(task, updataData);
 
@@ -42,7 +42,7 @@ export class UsersService {
       where: { id: id, ownerID: verified.userID },
     });
 
-    if (!existTask) throw new NotFoundException('this task not found');
+    if (!existTask) return { statusCode: 404, message: 'Task not found' };
 
     this.taskRepository.delete(id);
     return await this.taskRepository.save(existTask);
@@ -61,7 +61,7 @@ export class UsersService {
       where: { id: id, ownerID: verified.userID },
     });
 
-    if (!existTask) throw new NotFoundException(`Task ${id} not found`);
+    if (!existTask) return { statusCode: 404, message: 'Task not found' };
 
     return existTask;
   }

@@ -1,9 +1,8 @@
-// src/components/SignupForm.tsx
 import axios from 'axios';
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-import './signup.css';
+import { Link } from 'react-router-dom';
 
 interface SignupData {
   email: string;
@@ -41,10 +40,10 @@ const SignupForm = () => {
   };
 
   return (
-    <div className="signup-form-container">
-      <h2 className="signup-form-title">Sign Up</h2>
-      <form className="signup-form">
-        <label htmlFor="email" className="signup-form-label">
+    <div className="w-[100vw] h-[100vh] flex flex-col justify-center items-center">
+      <h2 className="font-bold mb-4 text-lg">Sign Up</h2>
+      <form className="flex gap-3 flex-col w-[80vw] md:w-[60vw] lg:w-[30vw] rounded-t-md p-5 bg-white shadow-md">
+        <label htmlFor="email">
           Email:
         </label>
         <input
@@ -53,11 +52,11 @@ const SignupForm = () => {
           name="email"
           value={formData.email}
           onChange={handleInputChange}
-          className="signup-form-input"
+          className="p-2 text-lg bg-slate-50"
           required
         />
 
-        <label htmlFor="password" className="signup-form-label">
+        <label htmlFor="password">
           Password:
         </label>
         <input
@@ -66,11 +65,11 @@ const SignupForm = () => {
           name="password"
           value={formData.password}
           onChange={handleInputChange}
-          className="signup-form-input"
+          className="p-2 text-lg bg-slate-50"
           required
         />
 
-        <label htmlFor="linkedinUrl" className="signup-form-label">
+        <label htmlFor="linkedinUrl">
           LinkedIn URL:
         </label>
         <input
@@ -79,13 +78,18 @@ const SignupForm = () => {
           name="linkedinUrl"
           value={formData.linkedinUrl}
           onChange={handleInputChange}
-          className="signup-form-input"
+          className="p-2 text-lg bg-slate-50"
           required
         />
 
-        <button onClick={handleSubmit} className="signup-form-button">
+        <button onClick={handleSubmit} className="bg-blue-500 text-white py-2 font-bold hover:bg-blue-600 rounded">
           Sign Up
         </button>
+
+        <div className='mt-10 flex'>
+         <p>You already have account </p>
+         <Link className="text-blue-500 px-5 font-bold rounded" to="/">login</Link>
+      </div>
       </form>
     </div>
   );
