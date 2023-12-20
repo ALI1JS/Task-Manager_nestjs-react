@@ -8,6 +8,34 @@ Task Manager is a full-stack web application built with Nest.js, TypeScript, Rea
 - Task Management: Create, update, getall, delete, and mark tasks as complete.
 - Category Filtering: Filter tasks based on their category.
 
+
+## Technologies:
+
+   nestjs: 10.0.0
+
+   typescript:  5.1.3
+
+   typeorm: 0.3.17
+
+   selenium-webdriver :  4.16.0
+
+   jwt:  10.2.0
+
+   bcrypt:  5.1.1
+
+   class-validator:  0.14.0
+
+   axios:  1.6.2
+
+  react:  18.2.0
+
+  react-hot-toast:  2.4.1
+  react-router-dom:  6.21.0
+
+  tailwindcss: 3.3.7
+
+
+
 ## Database Configuration
 
 1. Create a database named `tasks`.
