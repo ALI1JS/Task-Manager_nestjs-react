@@ -13,7 +13,7 @@ export class TaskEntity {
   @Column()
   desc: string;
 
-  @Column()
+  @Column({ nullable: true })
   date: Date;
 
   @Column({ default: 'pending' })

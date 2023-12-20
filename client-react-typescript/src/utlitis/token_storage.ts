@@ -1,7 +1,7 @@
 export const saveTokenInLocalStorage = (token: string) => {
-  localStorage.setItem("access_token", token);
+  sessionStorage.setItem("access_token", token);
 };
 
 export const retriveToken = () => {
-  return localStorage.getItem("access_token");
+  return sessionStorage.getItem("access_token");
 };
