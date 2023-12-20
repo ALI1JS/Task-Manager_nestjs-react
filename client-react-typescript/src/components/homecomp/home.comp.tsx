@@ -31,6 +31,9 @@ const HomePage= () => {
     const headers = {'Authorization': retriveToken()}
     axios.post("http://localhost:5000/v1/users/create/task", newTask, {headers} )
     .then((res)=>{
+
+       setTask([...tasks, res.data]);
+      // to reset the inputs 
         setNewTask({
           title: '',
           desc: '',
