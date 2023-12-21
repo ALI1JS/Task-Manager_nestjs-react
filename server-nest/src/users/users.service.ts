@@ -27,7 +27,7 @@ export class UsersService {
     const task = await this.taskRepository.findOne({
       where: { id: id, ownerID: verified.userID },
     });
-
+    console.log(updataData);
     if (!task) return { statusCode: 404, message: 'Task not found' };
 
     this.taskRepository.merge(task, updataData);

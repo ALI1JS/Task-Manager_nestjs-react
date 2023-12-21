@@ -1,11 +1,11 @@
 # Task Manager
 
-Task Manager is a full-stack web application built with Nest.js, TypeScript, React, PostgreSQL, and JWT authentication.
+Task Manager is a full-stack web application built with Nest.js, TypeScript, React, PostgreSQL, JWT authentication and manage the state with redux toolkit
 
 ## Features
 
 - User authentication: Sign up and log in securely using JWT tokens.
-- Task Management: Create, update, getall, delete, and mark tasks as complete.
+- Task Management: Create, update, getall, delete, mark tasks as complete and uncomplete.
 - Category Filtering: Filter tasks based on their category.
 
 
@@ -29,7 +29,10 @@ Task Manager is a full-stack web application built with Nest.js, TypeScript, Rea
 
   react:  18.2.0
 
+  @reduxjs/toolkit: 2.0.1
+
   react-hot-toast:  2.4.1
+  
   react-router-dom:  6.21.0
 
   tailwindcss: 3.3.7
@@ -39,8 +42,9 @@ Task Manager is a full-stack web application built with Nest.js, TypeScript, Rea
 ## Database Configuration
 
 1. Create a database named `tasks`.
-2. Set up your database connection in the backend's `ormconfig.ts` file in the
-/src/ormconfig.ts
+2. create a configration file like /src/ormconfig.ts 
+3. put the configration object in this file 
+
 
 example:
 
@@ -65,6 +69,7 @@ example:
 
 
 
+
 ## Installation
     1. Clone the repository:
 
@@ -74,13 +79,13 @@ example:
 ## Run the application
   
   ### To run the the client
- cd Task-manager/server-nest
+ cd Task-Manager_nestjs-react/server-nest
  npm i
  npm run start:dev
    
 
 To run the the client
-cd Task-manager/client-react-typescript
+cd Task-Manager_nestjs-react/client-react-typescript
 npm i
 npm run start
 

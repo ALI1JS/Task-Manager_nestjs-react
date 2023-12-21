@@ -3,14 +3,15 @@ import React, { useEffect, useState } from 'react';
 import { retriveToken } from '../../utlitis/token_storage';
 import Task from './task.comp';
 import { toast } from "react-hot-toast";
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import { addTask, deleteTask, putAllTasks, updateTask, filterTasks, filterByStatus } from '../../store/reducers/task-reducer';
 
 
 const HomePage = () => {
 
-
-  const [tasks, setTask] = useState([
-    { id: 1, title: 'Task 1', desc: 'Description for Task 1', date: "MM-DD-YYYY", status: 'pending', catogery: 'personal' }
-  ]);
+  const dispatch = useDispatch();
+  const tasks = useSelector((state: RootState) => state.TaskReducer.tasks)
 
   const [showForm, setShowForm] = useState(false);
   const [newTask, setNewTask] = useState({
@@ -25,14 +26,14 @@ const HomePage = () => {
     setNewTask({ ...newTask, [e.target.name]: e.target.value });
   };
 
-
-
   const handleCreateTask = async () => {
+
     const headers = { 'Authorization': retriveToken() }
     axios.post("http://localhost:5000/v1/users/create/task", newTask, { headers })
       .then((res) => {
 
-        setTask([res.data,...tasks]);
+        dispatch(addTask(res.data));
+
         // to reset the inputs 
         setNewTask({
           title: '',
@@ -55,7 +56,7 @@ const HomePage = () => {
       params
     })
       .then((res) => {
-        setTask(res.data);
+        dispatch(filterTasks(res.data));
       })
       .catch((err) => { toast.error(err.message) })
 
@@ -64,13 +65,15 @@ const HomePage = () => {
         headers
       })
         .then((res) => {
-          setTask(res.data);
+          dispatch(filterTasks(res.data));
         })
         .catch((err) => { toast.error(err.message) })
     }
   })
 
-
+  const filterTasksByStatus = ((e: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(filterByStatus(e.target.value))
+  })
 
   const handleUpdate = (id: number, updatedTitle: string, updatedDescription: string) => {
     const updatedData = { title: updatedTitle, desc: updatedDescription }
@@ -78,8 +81,8 @@ const HomePage = () => {
 
     axios.patch(`http://localhost:5000/v1/users/update/task/${id}`, updatedData, { headers })
       .then((res) => {
-        const updatedTasks = tasks.map((task) => task.id === res.data.id ? res.data : task);
-        setTask(updatedTasks);
+
+        dispatch(updateTask(res.data))
         toast.success("Updated task");
       })
       .catch((err) => {
@@ -89,39 +92,56 @@ const HomePage = () => {
   };
 
   const handleDelete = (id: number) => {
-    console.log(typeof (id));
+
     const headers = { 'Authorization': retriveToken() };
     axios.delete(`http://localhost:5000/v1/users/delete/task/${id}`, { headers })
       .then((res) => {
-        const updatedTasks = tasks.filter((task) => task.id !== res.data.id);
-        setTask(updatedTasks);
+
+        dispatch(deleteTask(res.data));
         toast.success("deleted task");
+
       })
       .catch((err) => { toast.error(err.message) });
   };
 
   const handleComplete = (id: number) => {
     const headers = { 'Authorization': retriveToken() };
-    axios.patch(`http://localhost:5000/v1/users/update/task/${id}`, { status: "complete" }, { headers })
+    axios.patch(`http://localhost:5000/v1/users/update/task/${id}`, { status: 'completed' }, { headers })
       .then((res) => {
-        const updatedTasks = tasks.map((task) => task.id === res.data.id ? { ...task, status: "completed" } : task)
-        setTask(updatedTasks);
-        toast.success("the task completed");
+
+        dispatch(updateTask(res.data));
+        toast.success(`the task completed`);
       })
       .catch((err) => toast.error(err.message));
   };
 
+  const handleUnComplete = (id: number) => {
+    const headers = { 'Authorization': retriveToken() };
+    axios.patch(`http://localhost:5000/v1/users/update/task/${id}`, { status: "pending" }, { headers })
+      .then((res) => {
+
+        dispatch(updateTask(res.data));
+        toast.success(`the task unCompleted`);
+      })
+      .catch((err) => toast.error(err.message));
+  };
 
   useEffect(() => {
+
     axios.get('http://localhost:5000/v1/users/all/tasks', {
       headers: { 'Authorization': retriveToken() },
     })
-      .then((res) => { setTask(res.data) })
+      .then((res) => {
+        dispatch(putAllTasks(res.data));
+      })
+
       .catch((err) => toast.error(err.message))
-  }, [])
+
+  }, [dispatch])
 
   return (
     <div className="container m-auto p-4">
+
       <div className='relative flex flex-col items-center'>
         <h2 className="text-2xl font-semibold mb-4">Create Task</h2>
 
@@ -208,34 +228,57 @@ const HomePage = () => {
         )}
       </div>
 
-      <div className="mt-8">
+      <div className="mt-8 flex flex-col">
         {/* catogery filter dropdown */}
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="catogeryFilter">
-            Filter by catogery
-          </label>
-          <select
-            id="catogeryFilter"
-            name="catogeryFilter"
-            onChange={handleCatogery}
-            className="border rounded w-full py-2 px-3"
-          >
-            <option value="all">All Categories</option>
-            <option value="personal">Personal</option>
-            <option value="work">Work</option>
-            <option value="study">Study</option>
-          </select>
+        <div className='flex gap-2'>
+          <div className="">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="catogeryFilter">
+              Filter by Catogery
+            </label>
+            <select
+              id="catogeryFilter"
+              name="catogeryFilter"
+              onChange={handleCatogery}
+              className="border rounded w-full py-2 px-3"
+            >
+              <option value="all">All Categories</option>
+              <option value="personal">Personal</option>
+              <option value="work">Work</option>
+              <option value="study">Study</option>
+            </select>
+          </div>
+          <div className="">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="catogeryFilter">
+              Filter by Status
+            </label>
+            <select
+              id="catogeryFilter"
+              name="catogeryFilter"
+              onChange={filterTasksByStatus}
+              className="border rounded w-full py-2 px-3"
+            >
+              <option value="all">All Tasks</option>
+              <option value="completed">Completed</option>
+              <option value="pending">Uncompleted</option>
+            </select>
+          </div>
         </div>
 
         {/* Task list */}
         <h2 className="text-2xl font-semibold mb-4">All Tasks</h2>
         <div className='grid gap-4 grid-flow-row grid-cols-1 md:grid-cols-2 xl:grid-cols-3'>
+          {
+            tasks.length === 0 &&
+            <h2 className='font-bold capitalize text-center text-xl'>No Tasks here you can add one</h2>
+
+          }
           {tasks.map((task, index) => (
 
             <Task key={index} id={task.id} title={task.title} desc={task.desc} date={task.date} status={task.status}
               onUpdate={(id, updatedTitle, updatedDescription) => handleUpdate(id, updatedTitle, updatedDescription)}
-              onDelete={(id) => handleDelete(task.id)}
-              onComplete={(id) => handleComplete(id)}
+              onDelete={() => handleDelete(task.id)}
+              handelComplete={() => handleComplete(task.id)}
+              handelunComplete={() => { handleUnComplete(task.id) }}
             />
           ))}
         </div>
