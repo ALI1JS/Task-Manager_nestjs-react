@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import TaskReducer from "./reducers/task-reducer"
+import userReducer from "./reducers/user-reducer";
 
 const store = configureStore({
     reducer: {
         TaskReducer,
+        userReducer
     }
 })
 

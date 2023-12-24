@@ -27,17 +27,16 @@ export class AuthService {
 
       const hashed = await this.passServices.hashPassword(newUser.password);
       newUser.password = hashed;
-      this.authRepository.create(newUser);
-
-      const usersaved = await this.authRepository.save(newUser);
 
       const scrapedData = await this.scrapingService.scraping(
         newUser.linkedinUrl,
       );
 
-      this.updateProfile(usersaved.id, scrapedData);
-
-      return usersaved;
+      const allData = { ...newUser, ...scrapedData };
+      this.authRepository.create(allData);
+      const usersaved = await this.authRepository.save(allData);
+      console.log(usersaved);
+      return { statusCode: 200, message: 'Sucessfull Registration', usersaved };
     } catch (err) {
       return err;
     }
@@ -62,7 +61,7 @@ export class AuthService {
       const payload = { userID: user.id, username: user.username };
       const access_token = await this.jwtServices.signAsync(payload);
 
-      return { statusCode: 200, message: 'login suscess', access_token };
+      return { statusCode: 200, message: 'login suscess', access_token, user };
     } catch (err) {
       throw err;
     }

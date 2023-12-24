@@ -3,7 +3,7 @@
 /node_modules
 /src/ormconfic.ts
 /src/tokenconstant.ts
-
+.env
 # Logs
 logs
 *.log

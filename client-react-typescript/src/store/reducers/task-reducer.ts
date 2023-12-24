@@ -4,7 +4,7 @@ interface Task {
   id: number;
   title: string;
   desc: string;
-  date: Date;
+  date: string;
   status: string;
 }
 

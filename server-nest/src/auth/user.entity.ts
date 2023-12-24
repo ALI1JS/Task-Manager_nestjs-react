@@ -5,7 +5,7 @@ export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: true, default: null })
+  @Column({ nullable: true })
   username: string;
 
   @Column()
@@ -17,6 +17,6 @@ export class UserEntity {
   @Column()
   linkedinUrl: string;
 
-  @Column({ nullable: true, default: null })
+  @Column({ nullable: true })
   avatar: string;
 }

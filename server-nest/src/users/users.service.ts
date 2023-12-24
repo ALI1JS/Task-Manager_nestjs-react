@@ -18,8 +18,10 @@ export class UsersService {
     taskData.ownerID = verified.userID;
 
     const task = this.taskRepository.create(taskData);
+    const taskSaved = await this.taskRepository.save(task);
 
-    return await this.taskRepository.save(task);
+    if (!taskSaved) return { statusCode: 201, message: 'Task not saved' };
+    return { statusCode: 200, message: 'Task saved sucessfully', taskSaved };
   }
 
   async updateTask(id: number, updataData: Partial<TaskEntity>, token: string) {
@@ -27,7 +29,7 @@ export class UsersService {
     const task = await this.taskRepository.findOne({
       where: { id: id, ownerID: verified.userID },
     });
-    console.log(updataData);
+
     if (!task) return { statusCode: 404, message: 'Task not found' };
 
     this.taskRepository.merge(task, updataData);

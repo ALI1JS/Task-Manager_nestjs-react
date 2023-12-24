@@ -5,3 +5,7 @@ export const saveTokenInLocalStorage = (token: string) => {
 export const retriveToken = () => {
   return sessionStorage.getItem("access_token");
 };
+
+export const removeToken = ()=>{
+    return sessionStorage.removeItem('access_token');
+}

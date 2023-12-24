@@ -1,37 +1,49 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { createContext, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { saveTokenInLocalStorage } from '../../utlitis/token_storage';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import Input from '../formcomp/input.comp';
+import Button from '../formcomp/button.comp';
+import { User } from '../../types/user-types';
+import { useDispatch} from 'react-redux';
+import { RootState } from '../../store/store';
+import { setUser } from '../../store/reducers/user-reducer';
 
+export const UserContext = createContext({
+  username:'',
+  email:'',
+  password:'',
+  avatar:'',
+  linkedinUrl:''
+});
 
-interface LoginData {
-  email: string;
-  password: string;
-}
+const LoginForm:React.FC = () => {
 
-const LoginForm = () => {
+  const dispatch = useDispatch()
+
   const navigate = useNavigate();
-
-  const [formData, setFormData] = useState<LoginData>({
+  const [formData, setFormData] = useState<User>({
     email: '',
     password: ''
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
 
+ 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     axios.post("http://localhost:5000/v1/auth/login", formData)
     .then((res)=>{
 
         if (res.data.statusCode === 200){
+             dispatch(setUser(res.data.user));
             toast.success(res.data.message);
             saveTokenInLocalStorage(res.data.access_token);
             navigate('/tasks')
@@ -48,34 +60,11 @@ const LoginForm = () => {
     <div className="w-[100vw] h-[100vh] flex flex-col justify-center items-center">
       <h2 className="font-bold mb-4 text-lg">Login</h2>
       <form onSubmit={handleSubmit} className="flex gap-3 flex-col w-[80vw] md:w-[60vw] lg:w-[30vw] rounded-t-md p-5 bg-white shadow-md">
-        <label htmlFor="email">
-          Email:
-        </label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleInputChange}
-          className="p-2 text-lg bg-slate-50"
-          required
-        />
 
-        <label htmlFor="password">
-          Password:
-        </label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          value={formData.password}
-          onChange={handleInputChange}
-          className="p-2 text-lg bg-slate-50"
-          required
-        />
-        <button type="submit" className="bg-blue-500 text-white py-2 font-bold hover:bg-blue-600 rounded">
-          Login
-        </button>
+        <Input type='email' labelName='email' name='email' value={formData.email} onChange={handleInputChange}/>
+        <Input type='password' labelName='password' name='password' value={formData.password} onChange={handleInputChange}/>
+
+        <Button name="Login" bg='bg-blue-500' hoverColor='bg-blue-600' onClick={handleSubmit}/>
 
         <div className='mt-10 flex'>
          <p>you haven't accoutn</p>

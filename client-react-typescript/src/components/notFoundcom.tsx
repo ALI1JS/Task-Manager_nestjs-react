@@ -7,7 +7,7 @@ const NotFoundPage = () => {
       <p className="text-lg text-gray-600 mb-8">
         Sorry, the page you are looking for might be in another castle.
       </p>
-      <Link className="bg-blue-500 px-10 py-3 text-white font-bold rounded" to="/tasks">your tasks</Link>
+      <Link className="bg-blue-500 px-10 py-3 text-white font-bold rounded" to="/">Login</Link>
     </div>
   );
 };
