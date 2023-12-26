@@ -67,7 +67,7 @@ const LoginForm:React.FC = () => {
         <Button name="Login" bg='bg-blue-500' hoverColor='bg-blue-600' onClick={handleSubmit}/>
 
         <div className='mt-10 flex'>
-         <p>you haven't accoutn</p>
+         <p>you haven't accoutn you can create one</p>
          <Link className="text-blue-500 px-5 font-bold rounded" to="/signup">sign up</Link>
       </div>
       </form>
