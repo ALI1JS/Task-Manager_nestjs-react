@@ -62,7 +62,7 @@ const CreateTask: React.FC = () => {
     return (
 
         <div className='relative flex flex-col items-center mt-10'>
-            <h2 className="text-2xl font-semibold mb-4">Create Task</h2>
+            <h2 className="text-2xl font-semibold mb-4">Create</h2>
 
             {/* Button to toggle the form visibility */}
             <Button bg="bg-blue-500" hoverColor="hover:bg-blue-600" name="Create Task" onClick={()=>{setShowForm(!showForm)}}/>
